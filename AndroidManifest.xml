@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.easemob.chatuidemo"
+    package="cn.ucai.yizhesale"
     android:versionCode="25"
     android:versionName="2.2.5" >
 
@@ -330,7 +330,7 @@
         <!-- 设置环信应用的appkey -->
         <meta-data
             android:name="EASEMOB_APPKEY"
-            android:value="	cy885633488#yizhesale" />
+            android:value="cy885633488#yizhesale" />
         <!-- 声明sdk所需的service -->
         <service android:name="com.easemob.chat.EMChatService"/>
         <!-- 声明sdk所需的receiver -->
