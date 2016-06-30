@@ -22,6 +22,8 @@ import android.widget.Toast;
 
 import com.easemob.EMError;
 import com.easemob.chat.EMChatManager;
+
+import cn.ucai.yizhesale.R;
 import cn.ucai.yizhesale.YiZheSaleApplication;
 
 import com.easemob.exceptions.EaseMobException;
@@ -31,62 +33,70 @@ import com.easemob.exceptions.EaseMobException;
  * 
  */
 public class RegisterActivity extends BaseActivity {
-	private EditText userNameEditText;
+	private EditText iphoneNumEditText;
+	private EditText yzmEditText;
 	private EditText passwordEditText;
-	private EditText confirmPwdEditText;
+    private EditText tjrIphoneNumEdiText;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(cn.ucai.yizhesale.R.layout.activity_register);
-		userNameEditText = (EditText) findViewById(cn.ucai.yizhesale.R.id.username);
-		passwordEditText = (EditText) findViewById(cn.ucai.yizhesale.R.id.password);
-		confirmPwdEditText = (EditText) findViewById(cn.ucai.yizhesale.R.id.confirm_password);
+        initView();
 	}
 
-	/**
+    private void initView() {
+        iphoneNumEditText = (EditText) findViewById(cn.ucai.yizhesale.R.id.iphoneNum);
+        yzmEditText = (EditText) findViewById(R.id.yzm);
+        passwordEditText = (EditText) findViewById(cn.ucai.yizhesale.R.id.register_password);
+        tjrIphoneNumEdiText = (EditText) findViewById(cn.ucai.yizhesale.R.id.tjr_iphoneNum);
+    }
+
+    /**
 	 * 注册
 	 * 
 	 * @param view
 	 */
 	public void register(View view) {
-		final String username = userNameEditText.getText().toString().trim();
-		final String pwd = passwordEditText.getText().toString().trim();
-		String confirm_pwd = confirmPwdEditText.getText().toString().trim();
-		if (TextUtils.isEmpty(username)) {
-			Toast.makeText(this, getResources().getString(cn.ucai.yizhesale.R.string.User_name_cannot_be_empty), Toast.LENGTH_SHORT).show();
-			userNameEditText.requestFocus();
+		final String iphoneNum = iphoneNumEditText.getText().toString().trim();
+        final String yzm = yzmEditText.getText().toString().trim();
+		final String password = passwordEditText.getText().toString().trim();
+		if (TextUtils.isEmpty(iphoneNum)) {
+			Toast.makeText(this, getResources().getString(R.string.Iphone_number_cannot_be_empty), Toast.LENGTH_SHORT).show();
+            iphoneNumEditText.requestFocus();
 			return;
-		} else if (TextUtils.isEmpty(pwd)) {
-			Toast.makeText(this, getResources().getString(cn.ucai.yizhesale.R.string.Password_cannot_be_empty), Toast.LENGTH_SHORT).show();
+		} else if (!iphoneNum.matches("^[1][3-8]+\\d{9}")){
+            iphoneNumEditText.requestFocus();
+            iphoneNumEditText.setError(getResources().getString(R.string.Iphone_number_bhf));
+        } else if (TextUtils.isEmpty(yzm)) {
+            Toast.makeText(this, getResources().getString(R.string.Yzm_cannot_be_empty), Toast.LENGTH_SHORT).show();
+            yzmEditText.requestFocus();
+            return;
+        } else if (TextUtils.isEmpty(password)) {
+			Toast.makeText(this, getResources().getString(R.string.Password_cannot_be_empty), Toast.LENGTH_SHORT).show();
 			passwordEditText.requestFocus();
-			return;
-		} else if (TextUtils.isEmpty(confirm_pwd)) {
-			Toast.makeText(this, getResources().getString(cn.ucai.yizhesale.R.string.Confirm_password_cannot_be_empty), Toast.LENGTH_SHORT).show();
-			confirmPwdEditText.requestFocus();
-			return;
-		} else if (!pwd.equals(confirm_pwd)) {
-			Toast.makeText(this, getResources().getString(cn.ucai.yizhesale.R.string.Two_input_password), Toast.LENGTH_SHORT).show();
 			return;
 		}
 
-		if (!TextUtils.isEmpty(username) && !TextUtils.isEmpty(pwd)) {
+		if (!TextUtils.isEmpty(iphoneNum) && !TextUtils.isEmpty(yzm) && !TextUtils.isEmpty(password)) {
 			final ProgressDialog pd = new ProgressDialog(this);
-			pd.setMessage(getResources().getString(cn.ucai.yizhesale.R.string.Is_the_registered));
+			pd.setMessage(getResources().getString(R.string.Is_the_registered));
 			pd.show();
 
 			new Thread(new Runnable() {
 				public void run() {
 					try {
 						// 调用sdk注册方法
-						EMChatManager.getInstance().createAccountOnServer(username, pwd);
+						EMChatManager.getInstance().createAccountOnServer(iphoneNum, password);
 						runOnUiThread(new Runnable() {
 							public void run() {
 								if (!RegisterActivity.this.isFinishing())
 									pd.dismiss();
-								// 保存用户名
-								YiZheSaleApplication.getInstance().setUserName(username);
-								Toast.makeText(getApplicationContext(), getResources().getString(cn.ucai.yizhesale.R.string.Registered_successfully), 0).show();
+								// 保存用户名(手机号)
+								YiZheSaleApplication.getInstance().setUserName(iphoneNum);
+								Toast.makeText(getApplicationContext(),
+										getResources().getString(R.string.Registered_successfully),
+										Toast.LENGTH_SHORT).show();
 								finish();
 							}
 						});
@@ -97,27 +107,31 @@ public class RegisterActivity extends BaseActivity {
 									pd.dismiss();
 								int errorCode=e.getErrorCode();
 								if(errorCode==EMError.NONETWORK_ERROR){
-									Toast.makeText(getApplicationContext(), getResources().getString(cn.ucai.yizhesale.R.string.network_anomalies), Toast.LENGTH_SHORT).show();
+									Toast.makeText(getApplicationContext(),
+											getResources().getString(R.string.network_anomalies),
+											Toast.LENGTH_SHORT).show();
 								}else if(errorCode == EMError.USER_ALREADY_EXISTS){
-									Toast.makeText(getApplicationContext(), getResources().getString(cn.ucai.yizhesale.R.string.User_already_exists), Toast.LENGTH_SHORT).show();
+									Toast.makeText(getApplicationContext(),
+											getResources().getString(R.string.User_already_exists),
+											Toast.LENGTH_SHORT).show();
 								}else if(errorCode == EMError.UNAUTHORIZED){
-									Toast.makeText(getApplicationContext(), getResources().getString(cn.ucai.yizhesale.R.string.registration_failed_without_permission), Toast.LENGTH_SHORT).show();
+									Toast.makeText(getApplicationContext(),
+											getResources().getString(R.string.registration_failed_without_permission),
+											Toast.LENGTH_SHORT).show();
 								}else if(errorCode == EMError.ILLEGAL_USER_NAME){
-								    Toast.makeText(getApplicationContext(), getResources().getString(cn.ucai.yizhesale.R.string.illegal_user_name),Toast.LENGTH_SHORT).show();
+								    Toast.makeText(getApplicationContext(),
+											getResources().getString(R.string.illegal_user_name),
+											Toast.LENGTH_SHORT).show();
 								}else{
-									Toast.makeText(getApplicationContext(), getResources().getString(cn.ucai.yizhesale.R.string.Registration_failed) + e.getMessage(), Toast.LENGTH_SHORT).show();
+									Toast.makeText(getApplicationContext(),
+											getResources().getString(R.string.Registration_failed) + e.getMessage(),
+											Toast.LENGTH_SHORT).show();
 								}
 							}
 						});
 					}
 				}
 			}).start();
-
 		}
 	}
-
-	public void back(View view) {
-		finish();
-	}
-
 }

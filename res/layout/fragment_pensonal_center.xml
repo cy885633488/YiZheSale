@@ -24,6 +24,16 @@
             android:textColor="@color/pink"
             android:background="@drawable/person_center_login_bg"
             android:layout_centerInParent="true"/>
+        <TextView
+            android:layout_width="50dp"
+            android:layout_height="20dp"
+            android:layout_marginTop="12dp"
+            android:background="@drawable/bg_border_orange2_shpe"
+            android:text="帅哥"
+            android:gravity="center"
+            android:textColor="@color/white"
+            android:layout_centerHorizontal="true"
+            android:layout_below="@id/btn_login_pc"/>
     </RelativeLayout>
     <RelativeLayout
         android:layout_width="match_parent"

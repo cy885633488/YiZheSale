@@ -29,6 +29,7 @@ import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.easemob.EMCallBack;
@@ -59,23 +60,22 @@ public class LoginActivity extends BaseActivity {
 
 	private String currentUsername;
 	private String currentPassword;
+	ProgressDialog pd;
+    RelativeLayout mRegister;
+    RelativeLayout mBack;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-
-		// 如果用户名密码都有，直接进入主页面
-		if (DemoHXSDKHelper.getInstance().isLogined()) {
-			autoLogin = true;
-			startActivity(new Intent(LoginActivity.this, MainActivity.class));
-
-			return;
-		}
-		setContentView(cn.ucai.yizhesale.R.layout.activity_login);
-
-		usernameEditText = (EditText) findViewById(cn.ucai.yizhesale.R.id.username);
-		passwordEditText = (EditText) findViewById(cn.ucai.yizhesale.R.id.password);
-
+		setContentView(R.layout.activity_login);
+		initView();
+		setListener();
+//		// 如果用户名密码都有，直接进入主页面
+//		if (DemoHXSDKHelper.getInstance().isLogined()) {
+//			autoLogin = true;
+//			startActivity(new Intent(LoginActivity.this, MainActivity.class));
+//			return;
+//		}
 		// 如果用户名改变，清空密码
 		usernameEditText.addTextChangedListener(new TextWatcher() {
 			@Override
@@ -98,6 +98,36 @@ public class LoginActivity extends BaseActivity {
 		}
 	}
 
+	private void setListener() {
+		setRegisterListener();
+        setBackListener();
+	}
+
+    private void setBackListener() {
+        mBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
+    }
+
+    private void setRegisterListener() {
+		mRegister.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(LoginActivity.this,RegisterActivity.class));
+            }
+        });
+	}
+
+	private void initView() {
+		usernameEditText = (EditText) findViewById(R.id.username);
+		passwordEditText = (EditText) findViewById(R.id.password);
+        mRegister = (RelativeLayout) findViewById(R.id.rl_login_register);
+        mBack = (RelativeLayout) findViewById(R.id.rl_login_back);
+    }
+
 	/**
 	 * 登录
 	 * 
@@ -105,34 +135,21 @@ public class LoginActivity extends BaseActivity {
 	 */
 	public void login(View view) {
 		if (!CommonUtils.isNetWorkConnected(this)) {
-			Toast.makeText(this, cn.ucai.yizhesale.R.string.network_isnot_available, Toast.LENGTH_SHORT).show();
+			Toast.makeText(this,R.string.network_isnot_available, Toast.LENGTH_SHORT).show();
 			return;
 		}
 		currentUsername = usernameEditText.getText().toString().trim();
 		currentPassword = passwordEditText.getText().toString().trim();
 
 		if (TextUtils.isEmpty(currentUsername)) {
-			Toast.makeText(this, cn.ucai.yizhesale.R.string.User_name_cannot_be_empty, Toast.LENGTH_SHORT).show();
+			Toast.makeText(this,R.string.Iphone_number_cannot_be_empty, Toast.LENGTH_SHORT).show();
 			return;
 		}
 		if (TextUtils.isEmpty(currentPassword)) {
-			Toast.makeText(this, cn.ucai.yizhesale.R.string.Password_cannot_be_empty, Toast.LENGTH_SHORT).show();
+			Toast.makeText(this,R.string.Password_cannot_be_empty, Toast.LENGTH_SHORT).show();
 			return;
 		}
-
-		progressShow = true;
-		final ProgressDialog pd = new ProgressDialog(LoginActivity.this);
-		pd.setCanceledOnTouchOutside(false);
-		pd.setOnCancelListener(new OnCancelListener() {
-
-			@Override
-			public void onCancel(DialogInterface dialog) {
-				progressShow = false;
-			}
-		});
-		pd.setMessage(getString(cn.ucai.yizhesale.R.string.Is_landing));
-		pd.show();
-
+		newShowProgress();
 		final long start = System.currentTimeMillis();
 		// 调用sdk登陆方法登陆聊天服务器
 		EMChatManager.getInstance().login(currentUsername, currentPassword, new EMCallBack() {
@@ -195,12 +212,27 @@ public class LoginActivity extends BaseActivity {
 				runOnUiThread(new Runnable() {
 					public void run() {
 						pd.dismiss();
-						Toast.makeText(getApplicationContext(), getString(cn.ucai.yizhesale.R.string.Login_failed) + message,
+						Toast.makeText(getApplicationContext(), getString(R.string.Login_failed) + message,
 								Toast.LENGTH_SHORT).show();
 					}
 				});
 			}
 		});
+	}
+
+	private void newShowProgress() {
+		progressShow = true;
+		pd = new ProgressDialog(LoginActivity.this);
+		pd.setCanceledOnTouchOutside(false);
+		pd.setOnCancelListener(new OnCancelListener() {
+
+			@Override
+			public void onCancel(DialogInterface dialog) {
+				progressShow = false;
+			}
+		});
+		pd.setMessage(getString(R.string.Is_landing));
+		pd.show();
 	}
 
 	private void initializeContacts() {
@@ -219,15 +251,6 @@ public class LoginActivity extends BaseActivity {
 		EMUserDao dao = new EMUserDao(LoginActivity.this);
 		List<EMUser> users = new ArrayList<EMUser>(userlist.values());
 		dao.saveContactList(users);
-	}
-	
-	/**
-	 * 注册
-	 * 
-	 * @param view
-	 */
-	public void register(View view) {
-		startActivityForResult(new Intent(this, RegisterActivity.class), 0);
 	}
 
 	@Override

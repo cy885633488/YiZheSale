@@ -193,7 +193,7 @@
     <string name="Failed_to_join_the_group_chat">Failed to join the group</string>
     <string name="temporary_does_not">Currently the video size greater than 10M is not supported!</string>
     <string name="Video_footage">Video record</string>
-    <string name="User_name_cannot_be_empty">User name cannot be empty!</string>
+    <string name="Iphone_number_cannot_be_empty">Iphone number cannot be empty!</string>
     <string name="Password_cannot_be_empty">Password cannot be empty!</string>
     <string name="please_set_the_current">"Please set the current user's nickname \ n to ios offline push not userid but Nick, see comments"</string>
     <string name="Is_landing">logining..</string>
@@ -214,7 +214,7 @@
     <string name="The_video_to_start">The video to start</string>
     <string name="Whether_to_send">Are you sure to send?</string>
     <string name="Open_the_equipment_failure">Open the equipment failure!</string>
-    <string name="Confirm_password_cannot_be_empty">Confirm password cannot be empty!</string>
+    <string name="Yzm_cannot_be_empty">Yzm cannot be empty!</string>
     <string name="Two_input_password">Inconsistent password, please enter again!</string>
     <string name="Is_the_registered">Registering..</string>
     <string name="Registered_successfully">Registered successfully</string>
