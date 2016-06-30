@@ -32,14 +32,16 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.easemob.EMCallBack;
+
+import cn.ucai.yizhesale.R;
 import cn.ucai.yizhesale.applib.controller.HXSDKHelper;
 import com.easemob.chat.EMChatManager;
 import com.easemob.chat.EMGroupManager;
 import cn.ucai.yizhesale.Constant;
 import cn.ucai.yizhesale.YiZheSaleApplication;
 import cn.ucai.yizhesale.DemoHXSDKHelper;
-import cn.ucai.yizhesale.db.UserDao;
-import cn.ucai.yizhesale.domain.User;
+import cn.ucai.yizhesale.db.EMUserDao;
+import cn.ucai.yizhesale.domain.EMUser;
 import cn.ucai.yizhesale.utils.CommonUtils;
 
 /**
@@ -158,7 +160,8 @@ public class LoginActivity extends BaseActivity {
 						public void run() {
 							pd.dismiss();
 							DemoHXSDKHelper.getInstance().logout(true,null);
-							Toast.makeText(getApplicationContext(), cn.ucai.yizhesale.R.string.login_failure_failed, 1).show();
+							Toast.makeText(getApplicationContext(),
+									R.string.login_failure_failed, Toast.LENGTH_LONG).show();
 						}
 					});
 					return;
@@ -201,36 +204,20 @@ public class LoginActivity extends BaseActivity {
 	}
 
 	private void initializeContacts() {
-		Map<String, User> userlist = new HashMap<String, User>();
+		Map<String, EMUser> userlist = new HashMap<String, EMUser>();
 		// 添加user"申请与通知"
-		User newFriends = new User();
+		EMUser newFriends = new EMUser();
 		newFriends.setUsername(Constant.NEW_FRIENDS_USERNAME);
 		String strChat = getResources().getString(
 				cn.ucai.yizhesale.R.string.Application_and_notify);
 		newFriends.setNick(strChat);
 
 		userlist.put(Constant.NEW_FRIENDS_USERNAME, newFriends);
-		// 添加"群聊"
-		User groupUser = new User();
-		String strGroup = getResources().getString(cn.ucai.yizhesale.R.string.group_chat);
-		groupUser.setUsername(Constant.GROUP_USERNAME);
-		groupUser.setNick(strGroup);
-		groupUser.setHeader("");
-		userlist.put(Constant.GROUP_USERNAME, groupUser);
-		
-		// 添加"Robot"
-		User robotUser = new User();
-		String strRobot = getResources().getString(cn.ucai.yizhesale.R.string.robot_chat);
-		robotUser.setUsername(Constant.CHAT_ROBOT);
-		robotUser.setNick(strRobot);
-		robotUser.setHeader("");
-		userlist.put(Constant.CHAT_ROBOT, robotUser);
-		
 		// 存入内存
 		((DemoHXSDKHelper) HXSDKHelper.getInstance()).setContactList(userlist);
 		// 存入db
-		UserDao dao = new UserDao(LoginActivity.this);
-		List<User> users = new ArrayList<User>(userlist.values());
+		EMUserDao dao = new EMUserDao(LoginActivity.this);
+		List<EMUser> users = new ArrayList<EMUser>(userlist.values());
 		dao.saveContactList(users);
 	}
 	

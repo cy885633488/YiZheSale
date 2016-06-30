@@ -24,7 +24,9 @@ import android.util.Log;
 import android.view.SurfaceHolder;
 
 import com.easemob.chat.EMVideoCallHelper;
+
 import cn.ucai.yizhesale.YiZheSaleApplication;
+
 
 public class CameraHelper implements PreviewCallback {
     private static final String TAG = "CameraHelper";

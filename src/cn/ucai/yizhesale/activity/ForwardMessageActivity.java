@@ -16,10 +16,10 @@ package cn.ucai.yizhesale.activity;
 import android.content.Intent;
 import android.os.Bundle;
 
-import cn.ucai.yizhesale.domain.User;
+import cn.ucai.yizhesale.domain.EMUser;
 
 public class ForwardMessageActivity extends PickContactNoCheckboxActivity {
-	private User selectUser;
+	private EMUser selectUser;
 	private String forward_msg_id;
 
 	 

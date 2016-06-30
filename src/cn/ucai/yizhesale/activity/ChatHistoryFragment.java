@@ -57,7 +57,7 @@ import cn.ucai.yizhesale.YiZheSaleApplication;
 import cn.ucai.yizhesale.DemoHXSDKHelper;
 import cn.ucai.yizhesale.adapter.ChatHistoryAdapter;
 import cn.ucai.yizhesale.db.InviteMessgeDao;
-import cn.ucai.yizhesale.domain.User;
+import cn.ucai.yizhesale.domain.EMUser;
 
 /**
  * 聊天记录Fragment
@@ -67,7 +67,7 @@ public class ChatHistoryFragment extends Fragment {
 
 	private InputMethodManager inputMethodManager;
 	private ListView listView;
-	private Map<String, User> contactList;
+	private Map<String, EMUser> contactList;
 	private ChatHistoryAdapter adapter;
 	private EditText query;
 	private ImageButton clearSearch;
@@ -98,7 +98,7 @@ public class ChatHistoryFragment extends Fragment {
 			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 				EMContact emContact = adapter.getItem(position);
 				if (adapter.getItem(position).getUsername().equals(YiZheSaleApplication.getInstance().getUserName()))
-					Toast.makeText(getActivity(), st, 0).show();
+					Toast.makeText(getActivity(), st, Toast.LENGTH_SHORT).show();
 				else {
 					// 进入聊天页面
 					  Intent intent = new Intent(getActivity(), ChatActivity.class);
@@ -200,18 +200,15 @@ public class ChatHistoryFragment extends Fragment {
 		adapter.notifyDataSetChanged();
 	}
 
-	
-	
+
 	/**
 	 * 获取有聊天记录的users和groups
-	 * 
-	 * @param context
 	 * @return
-	 */
+     */
 	private List<EMContact> loadUsersWithRecentChat() {
 		List<EMContact> resultList = new ArrayList<EMContact>();
 		//获取有聊天记录的users，不包括陌生人
-		for (User user : contactList.values()) {
+		for (EMUser user : contactList.values()) {
 			EMConversation conversation = EMChatManager.getInstance().getConversation(user.getUsername());
 			if (conversation.getMsgCount() > 0) {
 				resultList.add(user);
@@ -232,9 +229,8 @@ public class ChatHistoryFragment extends Fragment {
 
 	/**
 	 * 根据最后一条消息的时间排序
-	 * 
-	 * @param usernames
-	 */
+	 * @param contactList
+     */
 	private void sortUserByLastChatTime(List<EMContact> contactList) {
 		Collections.sort(contactList, new Comparator<EMContact>() {
 			@Override

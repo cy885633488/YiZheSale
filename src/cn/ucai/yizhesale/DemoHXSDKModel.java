@@ -20,9 +20,9 @@ import android.content.Context;
 
 import cn.ucai.yizhesale.applib.model.DefaultHXSDKModel;
 import cn.ucai.yizhesale.db.DemoDBManager;
-import cn.ucai.yizhesale.db.UserDao;
+import cn.ucai.yizhesale.db.EMUserDao;
 import cn.ucai.yizhesale.domain.RobotUser;
-import cn.ucai.yizhesale.domain.User;
+import cn.ucai.yizhesale.domain.EMUser;
 
 public class DemoHXSDKModel extends DefaultHXSDKModel {
 
@@ -39,29 +39,29 @@ public class DemoHXSDKModel extends DefaultHXSDKModel {
         return true;
     }
     
-    public boolean saveContactList(List<User> contactList) {
-        UserDao dao = new UserDao(context);
+    public boolean saveContactList(List<EMUser> contactList) {
+        EMUserDao dao = new EMUserDao(context);
         dao.saveContactList(contactList);
         return true;
     }
 
-    public Map<String, User> getContactList() {
-        UserDao dao = new UserDao(context);
+    public Map<String, EMUser> getContactList() {
+        EMUserDao dao = new EMUserDao(context);
         return dao.getContactList();
     }
     
-    public void saveContact(User user){
-    	UserDao dao = new UserDao(context);
+    public void saveContact(EMUser user){
+    	EMUserDao dao = new EMUserDao(context);
     	dao.saveContact(user);
     }
     
     public Map<String, RobotUser> getRobotList(){
-    	UserDao dao = new UserDao(context);
+    	EMUserDao dao = new EMUserDao(context);
     	return dao.getRobotUser();
     }
 
     public boolean saveRobotList(List<RobotUser> robotList){
-    	UserDao dao = new UserDao(context);
+    	EMUserDao dao = new EMUserDao(context);
     	dao.saveRobotUser(robotList);
     	return true;
     }

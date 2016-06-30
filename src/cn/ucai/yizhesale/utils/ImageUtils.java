@@ -13,8 +13,21 @@
  */
 package cn.ucai.yizhesale.utils;
 
+import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.os.Environment;
+
+import com.android.volley.toolbox.NetworkImageView;
 import com.easemob.util.EMLog;
 import com.easemob.util.PathUtil;
+
+import java.io.File;
+
+import cn.ucai.yizhesale.I;
+import cn.ucai.yizhesale.R;
+import cn.ucai.yizhesale.data.RequestManager;
+
 
 public class ImageUtils {
 //	public static String getThumbnailImagePath(String imagePath) {
@@ -28,7 +41,7 @@ public class ImageUtils {
 	public static String getImagePath(String remoteUrl)
 	{
 		String imageName= remoteUrl.substring(remoteUrl.lastIndexOf("/") + 1, remoteUrl.length());
-		String path =PathUtil.getInstance().getImagePath()+"/"+ imageName;
+		String path = PathUtil.getInstance().getImagePath()+"/"+ imageName;
         EMLog.d("msg", "image path:" + path);
         return path;
 		
@@ -37,10 +50,54 @@ public class ImageUtils {
 	
 	public static String getThumbnailImagePath(String thumbRemoteUrl) {
 		String thumbImageName= thumbRemoteUrl.substring(thumbRemoteUrl.lastIndexOf("/") + 1, thumbRemoteUrl.length());
-		String path =PathUtil.getInstance().getImagePath()+"/"+ "th"+thumbImageName;
+		String path = PathUtil.getInstance().getImagePath()+"/"+ "th"+thumbImageName;
         EMLog.d("msg", "thum image path:" + path);
         return path;
     }
-	
-	
+
+	/**
+	 * 返回头像保存在sd卡的位置；
+	 * Android/data/cn.ucai.superwechat/files/pictures/user_avatar
+	 * @param context
+	 * @param path
+	 * @return
+     */
+	public static String getAvatarpath(Context context,String path){
+		File dir = context.getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+		File folder = new File(dir,path);
+		if(!folder.exists()){
+			folder.mkdir();
+		}
+		return folder.getAbsolutePath();
+	}
+
+//	public static void setNewGoodThumb(String goodsThumb, NetworkImageView niv) {
+//		String path = I.DOWNLOAD_BOUTIQUE_IMG_URL + goodsThumb;
+//		niv.setImageUrl(path, RequestManager.getImageLoader());
+//		niv.setDefaultImageResId(R.drawable.nopic);
+//		niv.setErrorImageResId(R.drawable.nopic);
+//	}
+
+//	public static void setGoodDetailThumb(String colorImg, NetworkImageView ivColor) {
+//		String path = FuLiCenterApplication.SERVER_ROOT
+//				+ "?" + I.KEY_REQUEST + "=" + I.REQUEST_DOWNLOAD_COLOR_IMG
+//				+ "&" + I.Color.COLOR_IMG + "=" + colorImg;
+//		setThumb(path,ivColor);
+//	}
+
+	public static void setSygGoodThumb(String path, NetworkImageView niv) {
+		niv.setImageUrl(path, RequestManager.getImageLoader());
+		niv.setDefaultImageResId(R.drawable.nopic);
+		niv.setErrorImageResId(R.drawable.nopic);
+	}
+
+	public static int getDrawableWidth(Context context,int resId){
+		Bitmap bitmap = BitmapFactory.decodeResource(context.getResources(), resId);
+		return bitmap.getWidth();
+	}
+
+	public static int getDrawableHeight(Context context,int resId){
+		Bitmap bitmap = BitmapFactory.decodeResource(context.getResources(), resId);
+		return bitmap.getHeight();
+	}
 }

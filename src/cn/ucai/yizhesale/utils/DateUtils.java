@@ -1,5 +1,7 @@
 package cn.ucai.yizhesale.utils;
 
+import com.easemob.util.TimeInfo;
+
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -9,7 +11,7 @@ import java.util.GregorianCalendar;
 import java.util.Locale;
 
 import cn.ucai.yizhesale.applib.controller.HXSDKHelper;
-import com.easemob.util.TimeInfo;
+
 
 public class DateUtils {
 

@@ -18,8 +18,13 @@ import android.content.Context;
 
 import com.easemob.EMCallBack;
 
-public class YiZheSaleApplication extends Application {
+import cn.ucai.yizhesale.data.RequestManager;
 
+public class YiZheSaleApplication extends Application {
+	public static String SERVER_ROOT = "http://www.syby8.com/apptools/productlist.aspx";
+	public static String SY_ITEM1_SERVER_ROOT = "http://www.syby8.com/apptools/indexad.aspx";
+    public static String SY_ITEM2_SERVER_ROOT = "http://www.syby8.com/apptools/app.aspx";
+	public static String PPTM_SERVER_ROOT = "http://www.syby8.com/apptools/brandsale.aspx";
 	public static Context applicationContext;
 	private static YiZheSaleApplication instance;
 	// login user name
@@ -56,6 +61,7 @@ public class YiZheSaleApplication extends Application {
          * }
          */
         hxSDKHelper.onInit(applicationContext);
+		RequestManager.init(applicationContext);
 	}
 
 	public static YiZheSaleApplication getInstance() {
@@ -83,9 +89,8 @@ public class YiZheSaleApplication extends Application {
 
 	/**
 	 * 设置用户名
-	 *
-	 * @param user
-	 */
+	 * @param username
+     */
 	public void setUserName(String username) {
 	    hxSDKHelper.setHXId(username);
 	}

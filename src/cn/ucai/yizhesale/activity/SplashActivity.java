@@ -19,8 +19,7 @@ import cn.ucai.yizhesale.DemoHXSDKHelper;
  */
 public class SplashActivity extends BaseActivity {
 	private RelativeLayout rootLayout;
-	private TextView versionText;
-	
+
 	private static final int sleepTime = 2000;
 
 	@Override
@@ -29,9 +28,6 @@ public class SplashActivity extends BaseActivity {
 		super.onCreate(arg0);
 
 		rootLayout = (RelativeLayout) findViewById(cn.ucai.yizhesale.R.id.splash_root);
-		versionText = (TextView) findViewById(cn.ucai.yizhesale.R.id.tv_version);
-
-		versionText.setText(getVersion());
 		AlphaAnimation animation = new AlphaAnimation(0.3f, 1.0f);
 		animation.setDuration(1500);
 		rootLayout.startAnimation(animation);
@@ -60,16 +56,18 @@ public class SplashActivity extends BaseActivity {
 						}
 					}
 					//进入主页面
-					startActivity(new Intent(SplashActivity.this, MainActivity.class));
-					finish();
+//					startActivity(new Intent(SplashActivity.this, MainActivity.class));
+//					finish();
 				}else {
 					try {
 						Thread.sleep(sleepTime);
 					} catch (InterruptedException e) {
 					}
-					startActivity(new Intent(SplashActivity.this, LoginActivity.class));
-					finish();
+//					startActivity(new Intent(SplashActivity.this, LoginActivity.class));
+//					finish();
 				}
+                startActivity(new Intent(SplashActivity.this, YiZHESaleMainActivity.class));
+                finish();
 			}
 		}).start();
 

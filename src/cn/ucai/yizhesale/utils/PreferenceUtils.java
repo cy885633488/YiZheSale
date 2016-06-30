@@ -13,9 +13,10 @@
  */
 package cn.ucai.yizhesale.utils;
 
+import android.content.Context;
+
 import cn.ucai.yizhesale.applib.utils.HXPreferenceUtils;
 
-import android.content.Context;
 
 /**
  * 
