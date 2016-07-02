@@ -104,7 +104,7 @@ public class SygAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         }
     }
 
-    public String sub(String string){
+    private String sub(String string){
         String str = null;
         if (string.contains(".")){
             if (string.length()==(string.indexOf("."))+2){

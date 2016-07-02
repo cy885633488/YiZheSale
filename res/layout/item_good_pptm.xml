@@ -2,17 +2,18 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:background="@color/white"
-    android:padding="10dp"
-    android:id="@+id/pptm_item_layout">
+    android:id="@+id/pptm_item_layout"
+    android:layout_marginTop="6dp">
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="40dp">
         <com.android.volley.toolbox.NetworkImageView
             android:id="@+id/niv_ppThumb_pptm"
             android:layout_width="40dp"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent"
+            android:layout_marginLeft="10dp"/>
         <TextView
             android:id="@+id/tv_ppName_pptm"
             android:layout_toRightOf="@id/niv_ppThumb_pptm"
@@ -29,11 +30,12 @@
             android:text="剩余天数"
             android:textColor="#ccc"
             android:layout_alignParentRight="true"
-            android:gravity="center"/>
+            android:gravity="center"
+            android:layout_marginRight="10dp"/>
         <TextView
             android:id="@+id/tv_discount_pptm"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="14dp"
             android:background="@drawable/pptm_discount_bg"
             android:layout_toLeftOf="@id/tv_day_pptm"
             android:layout_centerVertical="true"
@@ -45,15 +47,16 @@
     </RelativeLayout>
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="260dp">
+        android:layout_height="320dp">
         <RelativeLayout
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="4">
+            android:layout_weight="4"
+            android:layout_marginLeft="8dp">
             <com.android.volley.toolbox.NetworkImageView
                 android:id="@+id/pptm_good1_niv_thumb"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent" />
+                android:layout_height="320dp" />
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="20dp"
@@ -85,9 +88,10 @@
         </RelativeLayout>
         <LinearLayout
             android:layout_width="0dp"
-            android:layout_height="match_parent"
+            android:layout_height="320dp"
             android:layout_weight="2"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:layout_marginLeft="4dp">
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
@@ -128,7 +132,8 @@
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:layout_weight="1">
+                android:layout_weight="1"
+                android:layout_marginTop="6dp">
                 <com.android.volley.toolbox.NetworkImageView
                     android:id="@+id/pptm_good3_niv_thumb"
                     android:layout_width="match_parent"

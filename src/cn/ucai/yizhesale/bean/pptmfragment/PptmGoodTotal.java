@@ -13,7 +13,7 @@ public class PptmGoodTotal implements Serializable {
     private String EndDateStr;
     private String ImgUrlSml;
     private String Name;
-    private PptmGoodBean[] ProductInfo;
+    private String ProductInfo;
 
     public int getBrandId() {
         return brandId;
@@ -63,11 +63,11 @@ public class PptmGoodTotal implements Serializable {
         Name = name;
     }
 
-    public PptmGoodBean[] getProductInfo() {
+    public String getProductInfo() {
         return ProductInfo;
     }
 
-    public void setProductInfo(PptmGoodBean[] productInfo) {
+    public void setProductInfo(String productInfo) {
         ProductInfo = productInfo;
     }
 
@@ -80,7 +80,7 @@ public class PptmGoodTotal implements Serializable {
                 ", EndDateStr='" + EndDateStr + '\'' +
                 ", ImgUrlSml='" + ImgUrlSml + '\'' +
                 ", Name='" + Name + '\'' +
-                ", ProductInfo=" + Arrays.toString(ProductInfo) +
+                ", ProductInfo='" + ProductInfo + '\'' +
                 '}';
     }
 }

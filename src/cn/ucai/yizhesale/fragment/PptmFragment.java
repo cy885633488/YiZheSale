@@ -15,6 +15,7 @@ import android.widget.RadioButton;
 import android.widget.TextView;
 
 import com.android.volley.Response;
+import com.google.gson.Gson;
 
 import java.util.ArrayList;
 
@@ -23,6 +24,7 @@ import cn.ucai.yizhesale.R;
 import cn.ucai.yizhesale.activity.BaseActivity;
 import cn.ucai.yizhesale.adapter.PptmAdapter;
 import cn.ucai.yizhesale.adapter.SygAdapter;
+import cn.ucai.yizhesale.bean.pptmfragment.PptmGoodBean;
 import cn.ucai.yizhesale.bean.pptmfragment.PptmGoodTotal;
 import cn.ucai.yizhesale.bean.pptmfragment.PptmGoodTotalNum;
 import cn.ucai.yizhesale.bean.sygfragment.GoodBean;
@@ -41,6 +43,7 @@ public class PptmFragment extends Fragment {
     RecyclerView mRecyclerView;
     PptmAdapter mAdapter;
     ArrayList<PptmGoodTotal> mPptmGoodList;
+    ArrayList<ArrayList<PptmGoodBean>> mGoodBeanList;
     SwipeRefreshLayout mSwipeRefreshLayout;
     TextView tvHint;
     LinearLayoutManager mLinearLayoutManager;
@@ -56,6 +59,7 @@ public class PptmFragment extends Fragment {
         View layout = inflater.inflate(R.layout.fragment_pptm,null);
         mContext = (BaseActivity) getActivity();
         mPptmGoodList = new ArrayList<PptmGoodTotal>();
+        mGoodBeanList = new ArrayList<ArrayList<PptmGoodBean>>();
         initData();
         initView(layout);
         setListener();
@@ -73,12 +77,16 @@ public class PptmFragment extends Fragment {
             @Override
             public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
                 super.onScrollStateChanged(recyclerView, newState);
+                Log.i("main",lastItemPosition+"");
+                Log.i("main",mAdapter.getItemCount()+"");
                 if (newState==RecyclerView.SCROLL_STATE_IDLE &&
                         lastItemPosition==mAdapter.getItemCount()-1){
+                    Log.i("main",mAdapter.getItemCount()+"");
                     if (mAdapter.isMore()){
                         action = I.ACTION_PULL_UP;
                         cpage++;
                         getPath();
+                        Log.i("main","path = "+path);
                         mContext.executeRequest(new GsonRequest<PptmGoodTotalNum>(path,
                                 PptmGoodTotalNum.class,
                                 responseDownloadPptmGoodTotalListener(),
@@ -123,19 +131,25 @@ public class PptmFragment extends Fragment {
         return new Response.Listener<PptmGoodTotalNum>() {
             @Override
             public void onResponse(PptmGoodTotalNum pptmGoodTotalNum) {
-                ArrayList<PptmGoodTotal> list = null;
                 if (pptmGoodTotalNum!=null){
                     if (pptmGoodTotalNum.getRows()!=null && pptmGoodTotalNum.getRows().length>0) {
-                        list = Utils.array2List(pptmGoodTotalNum.getRows());
+                        Gson gson = new Gson();
+                        PptmGoodBean[] goodBean = new PptmGoodBean[3];
+                        mPptmGoodList = Utils.array2List(pptmGoodTotalNum.getRows());
+                        for(int i=0;i<pptmGoodTotalNum.getRows().length;i++){
+                            String str = pptmGoodTotalNum.getRows()[i].getProductInfo();
+                            mGoodBeanList.add(Utils.array2List(gson.fromJson(str,goodBean.getClass())));
+                        }
+                        Log.i("main","mPptmGoodList.size = "+mPptmGoodList.size());
                         mAdapter.setMore(true);
                         if (action == I.ACTION_DOWNLOAD || action == I.ACTION_PULL_DOWN) {
                             mSwipeRefreshLayout.setRefreshing(false);
                             tvHint.setVisibility(View.GONE);
-                            mAdapter.initList(list);
+                            mAdapter.initList(mPptmGoodList);
                         } else if (action == I.ACTION_PULL_UP) {
-                            mAdapter.addList(list);
+                            mAdapter.addList(mPptmGoodList);
                         }
-                        if (pptmGoodTotalNum.getRows().length<40){
+                        if (pptmGoodTotalNum.getRows().length<20){
                             mAdapter.setMore(false);
                         }
                     }
@@ -175,7 +189,7 @@ public class PptmFragment extends Fragment {
         mRecyclerView = (RecyclerView) layout.findViewById(R.id.rv_pptm);
         mLinearLayoutManager = new LinearLayoutManager(mContext);
         mLinearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
-        mAdapter = new PptmAdapter(mContext,mPptmGoodList);
+        mAdapter = new PptmAdapter(mContext,mPptmGoodList,mGoodBeanList);
         mRecyclerView.setHasFixedSize(true);
         mRecyclerView.setLayoutManager(mLinearLayoutManager);
         mRecyclerView.setAdapter(mAdapter);
